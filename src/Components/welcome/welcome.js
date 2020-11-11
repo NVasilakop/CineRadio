@@ -41,7 +41,7 @@ class Welcome extends Component{
         return (
           <div>
           <Router>  
-          <div id="cineImg" className="parallax"  
+          <div id={!this.state.isShown?"cineImg":"cineImg1V2"} className="parallax"  
           onMouseEnter={() =>this.changeButtonFlag()}
           onMouseLeave={() => this.changeButtonFlag()}>
           
