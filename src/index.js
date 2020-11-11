@@ -1,13 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import Welcome from './Components/welcome/welcome'
+import MenuBar from './Components/menuBar/menuBar';
+/* <React.StrictMode>
+</React.StrictMode> */
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <div> 
+  <div>   
+  <MenuBar/>
+  </div>
+  <div style={{marginTop:'70px'}}>
+  <React.Fragment>
+ <Welcome/>
+ </React.Fragment>
+ </div>
+ </div>,
   document.getElementById('root')
 );
 

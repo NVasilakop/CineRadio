@@ -1,0 +1,93 @@
+.parallax {
+    /* The image used */  
+    /* Set a specific height */
+    height: 500px;
+  
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    opacity: 0.90;
+  }
+
+.midText{
+    display: block;
+    color:teal;
+    background:radial-gradient(ellipse at top,#FADBD8, transparent),
+    radial-gradient(ellipse at bottom, #EC7063, transparent);
+    /* background: radial-gradient(circle at 100%,  #EAFAF1, #F8C471 50%, #FADBD8 75%, #FADBD8  75%); */
+    /* background: radial-gradient(circle at 100%, #CD6155, #F8C471 50%,#FAD7A0  75%,#EC7063  75%); */
+    text-align: center;
+    padding: 50px 80px;
+    text-align: justify;
+}
+
+#cineImg{
+    background-image: url("../../assets/images/myke-simon-atsUqIm3wxo-unsplash.jpg");
+  
+}
+
+#musicImg{
+    background-image: url("../../assets/images/turntable-1208177.jpg");
+    opacity: 0.80;
+}
+  body, html {
+    height: 100%;
+  }
+
+.goToMovies{
+       position: absolute;
+        left: 0;
+        top: 50%;
+        
+        text-align: center;
+        color: #000;
+}
+
+button {
+  display: none; /* Hide button */
+}
+
+.divbutton:hover button {
+   display: block; /* On :hover of div show button */
+}
+
+/* .curtain {
+ 
+} */
+.cineImg2{
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.left-panel,
+.right-panel {
+  width: 50%;
+  height: 100vh;
+  float: left;
+  z-index: 0;
+  position: relative;
+  background: turquoise;
+  transition: all 2s ease-in;
+}
+
+.content {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: 333;
+  z-index: 1;
+  text-align: center;
+}
+
+.cineImg2:hover .left-panel  {
+    transform: translateX(-100%);
+  }
+  
+.cineImg2:hover .right-panel {
+    transform: translateX(100%);
+  }
