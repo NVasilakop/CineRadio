@@ -4,19 +4,22 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Welcome from './Components/welcome/welcome'
 import MenuBar from './Components/menuBar/menuBar';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 /* <React.StrictMode>
 </React.StrictMode> */
 ReactDOM.render(
-  <div> 
-  <div>   
-  <MenuBar/>
-  </div>
-  <div style={{marginTop:'70px'}}>
-  <React.Fragment>
- <Welcome/>
- </React.Fragment>
- </div>
- </div>,
+
+  <div>
+    <div>
+      <MenuBar />
+    </div>
+    <div style={{ marginTop: '70px' }}>
+      <React.Fragment>
+        <Welcome />
+      </React.Fragment>
+    </div>
+  </div>,
   document.getElementById('root')
 );
 
