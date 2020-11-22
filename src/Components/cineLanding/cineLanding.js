@@ -3,6 +3,14 @@ import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import './cineLanding.css';
 import axios from "axios";
 import MovieGenre from '../movies/movieGenreCards/movieGenre';
+import MovieList from '../movies/movieGenreCards/movieList';
+
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 // import MoviesGenreList from "../movies/movieGenreCards/movieGenreList"
 
 
@@ -18,6 +26,7 @@ var options = {
     }
 };
 
+var showMovies = true;
 
 class CineLanding extends Component {
     // [value, setValue] = state.useState(0);
@@ -27,10 +36,13 @@ class CineLanding extends Component {
         super();
         // this.getMovie();
         this.state = {
-            movieGenres: []
+            movieGenres: [],
+            showMovieGenre: true,
         };
         // this.getMoviesgenreList = this.getMoviesgenreList.bind(this);
         this.getMoviesgenreList();
+        // this.handler = this.handler.bind(this)
+
     }
 
     getMovie() {
@@ -52,7 +64,7 @@ class CineLanding extends Component {
             .then((response) => {
                 console.log(response.data.genres);
                 this.setState({
-                    movieGenres: response.data.genres
+                    movieGenres: response.data.genres,
                 });
             }).catch(function (error) {
                 console.error(error);
@@ -61,27 +73,51 @@ class CineLanding extends Component {
     }
     componentDidMount() {
         this._isMounted = true;
-
-        // if (this._isMounted) {
-        //     this.setState({
-        //         movieGenres: this.getMoviesgenreList()
-        //     });
-        //     console.log(this.state.movieGenres);
-
     }
 
     componentWillUnmount() {
         this._isMounted = false;
     }
+
+    handler = () => {
+        // console.log("Movie Genre value is");
+        // console.log(movieGenre);
+        this.setState({
+            showMovieGenre: false,
+        }, () => {
+            showMovies = this.state.showMovieGenre;
+            this.forceUpdate();
+        })
+        console.log("Το showMovieGenre ειναι");
+        console.log(this.state.showMovieGenre);
+    }
+
     render() {
         return (
-
-            // <MoviesGenreList movieGenres={this.getMoviesgenreList()}></MoviesGenreList>
-            <div className="row">
-                {this.state.movieGenres.map((item, index) => {
-                    return <MovieGenre {...item} key={index} />
-                })}
+            /* <Router>
+                 <div>
+                     <Switch>
+                         <Route path="/moviesGenre">
+                             { <MoviesGenreList movieGenres={this.getMoviesgenreList()}></MoviesGenreList> }*/
+            <div>
+                {
+                    showMovies ?
+                        <div className="row" >
+                            {
+                                this.state.movieGenres.map((item, index) => {
+                                    return <MovieGenre {...item} key={index} handler={this.handler} />
+                                })
+                            }
+                        </div>
+                        : <div>
+                            <MovieList id={this.props.id} />
+                        </div>
+                }
             </div>
+            /*</Route>
+        </Switch>
+    </div>
+</Router>*/
         );
     }
 }

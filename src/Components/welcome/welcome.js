@@ -9,6 +9,7 @@ import {
   Link
 } from "react-router-dom";
 // import {useRoutes} from 'hookrouter';
+import RouteWithSubRoutes from '../../Shared/RouteService';
 
 const routes = {
   "/": () => <Welcome />,
@@ -76,7 +77,8 @@ class Welcome extends Component {
                           Go To Cine
                      </Link>
                       </Button>
-                      <Route path="/cine" component={CineLanding} />
+                      {/* <Route path="/cine" component={CineLanding} /> */}
+                      {/* <RouteWithSubRoutes path='/cine' /> */}
                     </div>
                   </div>
                 )}
