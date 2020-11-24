@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "@types/hookrouter": "^2.2.3",
     "axios": "^0.21.0",
+    "axios-delay": "^1.0.0-rc6",
     "bootstrap": "^4.5.3",
     "hookrouter": "^1.2.3",
     "react": "^17.0.1",

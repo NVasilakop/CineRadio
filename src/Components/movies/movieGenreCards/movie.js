@@ -1,21 +1,141 @@
 import './movie.css'
+import React, { Component } from 'react';
+import axios from 'axios';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import { withStyles } from '@material-ui/core/styles';
+import MovieDetails from './../movieCard/movieDetails';
+import { waitFor } from '@testing-library/react';
+import { delayAdapterEnhancer } from 'axios-delay';
+
+const useStyles = theme => ({
+    root: {
+        maxWidth: 345,
+    },
+});
 
 class Movie extends Component {
     // [value, setValue] = state.useState(0);
+    componentWillReceiveProps(nextProps) {
+        this.state = {
+            movieTitle: nextProps.title,
+            backPoster: '',
+            showMovieDetails: false,
+            movieDetails: Object,
+            showMovieCard: false,
+            showImg: false
+
+        }
+        this.fetchBackPoster();
+    }
 
     constructor(props) {
-        super();
+        super(props);
         this.state = {
+            movieTitle: props.title,
+            backPoster: '',
+            showMovieDetails: false,
+            movieDetails: Object,
+            showMovieCard: false,
+            showImg: false
+
         }
+        this.fetchBackPoster();
+    }
+    api = axios.create({
+        adapter: delayAdapterEnhancer(axios.defaults.adapter)
+    });
+
+
+    onLoad = () => {
+        this.setState({
+            showImg: true
+        })
+    }
+    fetchBackPoster = () => {
+        this.api.get('https://image.tmdb.org/t/p/w300' + this.props.poster_path, { delay: 5000 })
+            .then((response) => {
+                console.log(response);
+                this.setState({
+                    backPoster: response.config.url,
+                    showImg: true
+                }, () => {
+                    this.forceUpdate();
+                })
+            }).catch(function (error) {
+                console.error(error);
+            });
 
     }
+
+    getMovieDetails = () => {
+        axios.request('https://api.themoviedb.org/3/movie/' + this.props.id + '?api_key=0744709c0c9f817d56414c84aae9d5c2&language=en-US')
+            .then((response) => {
+                console.log(response)
+                this.setState({
+                    // overviewTitle: response.overview,
+                    movieDetails: response.data,
+                    showMovieDetails: true
+                }, () => {
+                    console.log("MovieDetails ");
+                    console.log(this.state.movieDetails);
+                })
+            }).catch(function (error) {
+                console.error(error);
+            });
+    }
+
+    goToMovieDetails = () => {
+        this.state.setState({
+            showMovieDetails: true
+        });
+    }
     render() {
+        const { classes } = this.props;
         return (
             <div>
-
+                {/* <div>{!this.state.showMovieDetails && */}
+                <Card className={classes.root}>
+                    <CardActionArea>
+                        {this.state.showImg &&
+                            <CardMedia
+                                component="img"
+                                alt="Contemplative Reptile"
+                                height="92"
+                                image={this.state.backPoster}
+                                title="Contemplative Reptile"
+                            />}
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {this.props.original_title}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                        <Button size="small" color="primary">
+                            Share
+        </Button>
+                        <Button id={this.props.id} size="small" color="primary" onClick={this.getMovieDetails} >
+                            Learn More
+        </Button>
+                    </CardActions>
+                </Card>
+                {/* // }
+            // </div> */}
+                <div>{this.state.showMovieDetails &&
+                    <MovieDetails details={this.state.movieDetails} />
+                }
+                </div>
             </div>
         )
     }
 }
 
-export default Movie
+export default withStyles(useStyles)(Movie)

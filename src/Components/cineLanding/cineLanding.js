@@ -110,7 +110,7 @@ class CineLanding extends Component {
                             }
                         </div>
                         : <div>
-                            <MovieList id={this.props.id} />
+                            <MovieList id={16} />
                         </div>
                 }
             </div>

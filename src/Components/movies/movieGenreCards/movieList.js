@@ -2,24 +2,39 @@ import { Component } from 'react';
 import './movieList.css';
 import axios from 'axios';
 import CustomPagination from './../../../Shared/Pagination/pagination';
+import Movie from './movie'
 
 var moviesByGenreToShow;
 class MovieList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            moviesByGenre: []
+            moviesByGenre: [],
+            page: 1,
+            pages: 1
         }
         // this.discoverMoviesByGenreClick = this.discoverMoviesByGenreClick.bind(this);
-        this.discoverMoviesByGenre();
 
-
+        this.discoverMoviesByGenre(this.state.page);
+        // this.getNextMovies(this.state.page);
     }
     // componentWillMount() {
     // }
 
-    discoverMoviesByGenre = () => {
-        axios.request('https://api.themoviedb.org/3/discover/movie?api_key=0744709c0c9f817d56414c84aae9d5c2&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=' + this.props.id)
+    getNextMovies = () => {
+        this.discoverMoviesByGenre(this.state.page + 1);
+    }
+    getPreviousMovies = () => {
+        if (this.state.page > 1) {
+            this.discoverMoviesByGenre(this.state.page - 1);
+        }
+        else {
+            this.discoverMoviesByGenre(1);
+        }
+    }
+
+    discoverMoviesByGenre = (page) => {
+        axios.request('https://api.themoviedb.org/3/discover/movie?api_key=0744709c0c9f817d56414c84aae9d5c2&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=' + this.props.id + '&page=' + page)
             // .then(function (response) {
             //     console.log(response.data);
             //     this.setState({
@@ -29,7 +44,9 @@ class MovieList extends Component {
             .then((response) => {
                 console.log(response)
                 this.setState({
-                    moviesByGenre: response.data.results
+                    moviesByGenre: response.data.results,
+                    pages: response.data.total_pages,
+                    page: response.data.page
                 }, () => {
                     // moviesByGenreToShow = this.state.moviesByGenre;
                     this.forceUpdate();
@@ -48,16 +65,13 @@ class MovieList extends Component {
             <div className="bigClass">
                 <div>
                     {this.state.moviesByGenre.map((item, index) => {
-                        // return <MovieGenre {...item} key={index} />
-                        <div className="row" key={index}>
-                            <div>
-                                {item.title}
-                            </div>
-                        </div>
+                        return <Movie {...item} key={index} />
                     })}
                 </div>
                 <div>
-                    <CustomPagination />
+                    <CustomPagination getNextMovies={this.getNextMovies} pages={this.state.pages} currentPage={this.state.page}
+                        getPreviousMovies={this.getPreviousMovies}
+                    />
                 </div>
             </div>
 
