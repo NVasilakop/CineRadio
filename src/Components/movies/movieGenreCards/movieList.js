@@ -5,13 +5,15 @@ import CustomPagination from './../../../Shared/Pagination/pagination';
 import Movie from './movie'
 
 var moviesByGenreToShow;
+var movieId;
 class MovieList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             moviesByGenre: [],
             page: 1,
-            pages: 1
+            pages: 1,
+            showMovieDetails: false
         }
         // this.discoverMoviesByGenreClick = this.discoverMoviesByGenreClick.bind(this);
 
@@ -20,6 +22,13 @@ class MovieList extends Component {
     }
     // componentWillMount() {
     // }
+
+    hideMovieList = (e) => {
+        movieId = e;
+        this.setState({
+            showMovieDetails: true
+        }, () => this.forceUpdate())
+    }
 
     getNextMovies = () => {
         this.discoverMoviesByGenre(this.state.page + 1);
@@ -62,19 +71,27 @@ class MovieList extends Component {
             // <div>
 
             // </div>
-            <div className="bigClass">
-                <div>
-                    {this.state.moviesByGenre.map((item, index) => {
-                        return <Movie {...item} key={index} />
-                    })}
+            !this.state.showMovieDetails ?
+                <div className="bigClass">
+                    <div>
+                        {this.state.moviesByGenre.map((item, index) => {
+                            return <Movie {...item} key={index} hideMovieList={this.hideMovieList} showDetails={false} />
+                        })}
+                    </div>
+                    <div>
+                        <CustomPagination getNextMovies={this.getNextMovies} pages={this.state.pages} currentPage={this.state.page}
+                            getPreviousMovies={this.getPreviousMovies}
+                        />
+                    </div>
                 </div>
-                <div>
-                    <CustomPagination getNextMovies={this.getNextMovies} pages={this.state.pages} currentPage={this.state.page}
+                : <div>
+                    {/* <CustomPagination getNextMovies={this.getNextMovies} pages={this.state.pages} currentPage={this.state.page}
                         getPreviousMovies={this.getPreviousMovies}
-                    />
+                    /> */}
+                    {/* {this.state.moviesByGenre.find(x => { */}
+                    <Movie key={movieId} {...this.state.moviesByGenre.find((x) => x.id === movieId)} showDetails={true} />
+                    {/* })} */}
                 </div>
-            </div>
-
         )
     }
 }

@@ -39,13 +39,16 @@ class Movie extends Component {
         this.state = {
             movieTitle: props.title,
             backPoster: '',
-            showMovieDetails: false,
+            showMovieDetails: this.props.showDetails ? true : false,
             movieDetails: Object,
             showMovieCard: false,
             showImg: false
 
         }
         this.fetchBackPoster();
+        if (this.state.showMovieDetails && this.props.showDetails) {
+            this.getMovieDetails();
+        }
     }
     api = axios.create({
         adapter: delayAdapterEnhancer(axios.defaults.adapter)
@@ -74,7 +77,7 @@ class Movie extends Component {
     }
 
     getMovieDetails = () => {
-        axios.request('https://api.themoviedb.org/3/movie/' + this.props.id + '?api_key=0744709c0c9f817d56414c84aae9d5c2&language=en-US')
+        this.api.get('https://api.themoviedb.org/3/movie/' + this.props.id + '?api_key=0744709c0c9f817d56414c84aae9d5c2&language=en-US', { delay: 2000 })
             .then((response) => {
                 console.log(response)
                 this.setState({
@@ -84,6 +87,7 @@ class Movie extends Component {
                 }, () => {
                     console.log("MovieDetails ");
                     console.log(this.state.movieDetails);
+                    this.forceUpdate();
                 })
             }).catch(function (error) {
                 console.error(error);
@@ -94,45 +98,55 @@ class Movie extends Component {
         this.state.setState({
             showMovieDetails: true
         });
+        this.props.hideMovieList();
     }
     render() {
         const { classes } = this.props;
         return (
             <div>
-                {/* <div>{!this.state.showMovieDetails && */}
-                <Card className={classes.root}>
-                    <CardActionArea>
-                        {this.state.showImg &&
-                            <CardMedia
-                                component="img"
-                                alt="Contemplative Reptile"
-                                height="92"
-                                image={this.state.backPoster}
-                                title="Contemplative Reptile"
-                            />}
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                {this.props.original_title}
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                        <Button size="small" color="primary">
-                            Share
-        </Button>
-                        <Button id={this.props.id} size="small" color="primary" onClick={this.getMovieDetails} >
-                            Learn More
-        </Button>
-                    </CardActions>
-                </Card>
-                {/* // }
-            // </div> */}
-                <div>{this.state.showMovieDetails &&
+                {!this.props.showDetails && !this.state.showMovieDetails ?
+                    <div>
+                        <div>{!this.state.showMovieDetails &&
+                            <Card className={classes.root}>
+                                <CardActionArea>
+                                    {this.state.showImg &&
+                                        <CardMedia
+                                            component="img"
+                                            alt="Contemplative Reptile"
+                                            height="120"
+                                            image={this.state.backPoster}
+                                            title="Contemplative Reptile"
+                                        />}
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {this.props.original_title}
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions>
+                                    <Button size="small" color="primary">
+                                        Share
+                                    </Button>
+                                    {/* onClick={this.getMovieDetails} */}
+                                    <Button id={this.props.id} size="small" color="primary" onClick={() => { this.getMovieDetails(); this.props.hideMovieList(this.props.id) }} >
+                                        Learn More
+                                 </Button>
+                                </CardActions>
+                            </Card>
+                        }</div>
+                    </div>
+                    /* { <div>{this.state.showMovieDetails &&
+                         <MovieDetails details={this.state.movieDetails} />
+                     }
+                     </div> }*/
+                    : null
+                }
+                {
+                    this.props.showDetails && this.state.showMovieDetails &&
                     <MovieDetails details={this.state.movieDetails} />
                 }
-                </div>
             </div>
         )
     }
