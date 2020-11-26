@@ -71,7 +71,7 @@ class MovieGenre extends Component {
         //     </div>;
         // }
         // else {
-        button = <Link to={"/cine/" + this.props.name.toLowerCase()} variant="primary" onClick={this.props.handler}>Check me</Link>;
+        button = <Link to={"/cine/" + this.props.name.toLowerCase()} variant="primary" onClick={() => this.props.handler(this.props.id)}>Check me</Link>;
         // }
         return (
 

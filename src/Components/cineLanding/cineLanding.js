@@ -38,6 +38,8 @@ class CineLanding extends Component {
         this.state = {
             movieGenres: [],
             showMovieGenre: true,
+            genreId: 0,
+            movieGenreClicked: false
         };
         // this.getMoviesgenreList = this.getMoviesgenreList.bind(this);
         this.getMoviesgenreList();
@@ -63,6 +65,10 @@ class CineLanding extends Component {
             //     return response.data;
             .then((response) => {
                 console.log(response.data.genres);
+                console.log("ShowMovieGenre");
+                console.log(this.state.showMovieGenre);
+                console.log("MovieGenreClicked");
+                console.log(this.state.movieGenreClicked);
                 this.setState({
                     movieGenres: response.data.genres,
                 });
@@ -79,13 +85,15 @@ class CineLanding extends Component {
         this._isMounted = false;
     }
 
-    handler = () => {
+    handler = (id) => {
         // console.log("Movie Genre value is");
         // console.log(movieGenre);
         this.setState({
             showMovieGenre: false,
+            genreId: id,
+            movieGenreClicked: true
         }, () => {
-            showMovies = this.state.showMovieGenre;
+            // showMovies = this.state.showMovieGenre;
             this.forceUpdate();
         })
         console.log("Το showMovieGenre ειναι");
@@ -101,7 +109,7 @@ class CineLanding extends Component {
                              { <MoviesGenreList movieGenres={this.getMoviesgenreList()}></MoviesGenreList> }*/
             <div>
                 {
-                    showMovies ?
+                    this.state.showMovieGenre && !this.state.movieGenreClicked ?
                         <div className="row" >
                             {
                                 this.state.movieGenres.map((item, index) => {
@@ -109,9 +117,14 @@ class CineLanding extends Component {
                                 })
                             }
                         </div>
-                        : <div>
-                            <MovieList id={16} />
+                        : null
+                }
+                {
+                    !this.state.showMovieGenre && this.state.movieGenreClicked ?
+                        <div>
+                            <MovieList id={this.state.genreId} />
                         </div>
+                        : null
                 }
             </div>
             /*</Route>

@@ -51,6 +51,7 @@ class MovieDetails extends Component {
 
         return (
             <div>
+                <p>{this.props.details.original_title}</p>
                 <div>
                     {this.props.details.overview}
                 </div>
