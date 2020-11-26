@@ -29,13 +29,35 @@ class MovieList extends Component {
             showMovieDetails: true
         }, () => this.forceUpdate())
     }
+    getSpecificMoviesPage = (page) => {
+        this.discoverMoviesByGenre(page);
+        this.setState({
+            page: page
+        }, () => {
+            this.forceUpdate();
+        });
+    }
 
     getNextMovies = () => {
         this.discoverMoviesByGenre(this.state.page + 1);
+        this.setState({
+            page: this.state.page + 1
+        }, () => {
+            // moviesByGenreToShow = this.state.moviesByGenre;
+            this.forceUpdate();
+        }
+        )
     }
     getPreviousMovies = () => {
         if (this.state.page > 1) {
             this.discoverMoviesByGenre(this.state.page - 1);
+            this.setState({
+                page: this.state.page - 1
+            }, () => {
+                // moviesByGenreToShow = this.state.moviesByGenre;
+                this.forceUpdate();
+            }
+            )
         }
         else {
             this.discoverMoviesByGenre(1);
@@ -80,7 +102,7 @@ class MovieList extends Component {
                     </div>
                     <div>
                         <CustomPagination getNextMovies={this.getNextMovies} pages={this.state.pages} currentPage={this.state.page}
-                            getPreviousMovies={this.getPreviousMovies}
+                            getPreviousMovies={this.getPreviousMovies} getSpecificMoviesPage={this.getSpecificMoviesPage}
                         />
                     </div>
                 </div>
