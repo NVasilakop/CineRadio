@@ -22,9 +22,6 @@ import RouteWithSubRoutes from './Shared/RouteService';
 ReactDOM.render(
   <div>
     <Router>
-      <div>
-        <MenuBar />
-      </div>
       <div style={{ marginTop: '70px' }}>
         <React.Fragment>
           <Welcome />

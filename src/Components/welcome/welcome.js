@@ -10,8 +10,7 @@ import {
 } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory'
 import { createBrowserHistory } from 'history'
-
-// import {useRoutes} from 'hookrouter';
+import MenuBar from '../menuBar/menuBar';
 import RouteWithSubRoutes from '../../Shared/RouteService';
 
 const history = createBrowserHistory();
@@ -25,7 +24,8 @@ class Welcome extends Component {
     this.state = {
       isShown: false,
       cineButton: false,
-      musicButton: false
+      musicButton: false,
+      loginClicked: false
     };
 
     // var routes = openRoutes();
@@ -44,6 +44,15 @@ class Welcome extends Component {
   pressMusicButton = () => {
     this.setState({ musicButton: !this.state.musicButton });
   }
+
+  loginClicked = () => {
+    this.setState({
+      loginClicked: true,
+      cineButton: true,
+      musicButton: true
+    }, () => this.forceUpdate());
+  }
+
   render() {
     // <div className={this.state.isShown?"":""}>         
 
@@ -51,10 +60,15 @@ class Welcome extends Component {
     return (
       <div>
         <Router history={history}>
-          <div> {this.state.cineButton && (
-            <CineLanding></CineLanding>
-          )}
+          <div>
+            <MenuBar loginClicked={this.loginClicked} />
           </div>
+          {(this.state.cineButton && !this.state.loginClicked) && (
+            <div>
+              <CineLanding></CineLanding>
+            </div>)
+          }
+
           {(!this.state.cineButton && !this.state.musicButton) && (
             <div>
               {/* <Router> */}
