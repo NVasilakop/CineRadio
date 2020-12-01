@@ -12,6 +12,7 @@ import createHistory from 'history/createBrowserHistory'
 import { createBrowserHistory } from 'history'
 import MenuBar from '../menuBar/menuBar';
 import RouteWithSubRoutes from '../../Shared/RouteService';
+import MusicLanding from './../Music/musicLanding/musicLanding';
 
 const history = createBrowserHistory();
 
@@ -104,10 +105,14 @@ class Welcome extends Component {
               </div>
               <div id="musicImg" className="parallax">
                 <div>
+                  <Link to="/musicLanding">
+                    GoToMusic
+                  </Link>
+                  {<Route path="/musicLanding" component={MusicLanding} />}
+
                 </div>
               </div>
-              {/* </div> */}
-              {/* </Router> */}
+
             </div>
           )}
         </Router>

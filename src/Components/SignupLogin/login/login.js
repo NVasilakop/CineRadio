@@ -15,6 +15,9 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { withFormik } from 'formik';
 import { compose } from '@reduxjs/toolkit';
+import { restdb } from './../../../Shared/LoginDb';
+import Alert from '@material-ui/lab/Alert';
+import axios from 'axios';
 
 function Copyright() {
     return (
@@ -53,14 +56,15 @@ const useStyles = theme => ({
 class Login extends Component {
     // classes = useStyles();
 
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         email: '',
-    //         password: ''
-    //     };
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: '',
+            password: '',
+            showLoginErrorMessage: false
+        };
 
-    // }
+    }
 
     updatePassword = (pass) => {
         this.setState({
@@ -77,7 +81,29 @@ class Login extends Component {
     }
 
     onSubmit = () => {
-        console.log("You are signed In")
+        axios.get(`https://cineradio-96ff.restdb.io/rest/login?q={"username":"${this.state.email}","password":"${this.state.password}"}`,
+            {
+                headers: {
+                    'x-apikey': '5fc56dd34af3f9656800d0e7'
+                }
+            })
+            .then(
+                (res) => {
+                    console.log(res);
+                    if (res.data.length !== 0) {
+                        this.props.clickLogin();
+                    }
+                    else {
+                        this.setState({
+                            showLoginErrorMessage: true
+                        })
+                    }
+                }, () => this.forceUpdate()
+            ).catch(function (error) {
+                console.error(error);
+            });
+        //this.props.clickLogin(); 
+
     }
 
     render() {
@@ -85,6 +111,9 @@ class Login extends Component {
 
         return (
             <Container component="main" maxWidth="xs">
+                {this.state.showLoginErrorMessage &&
+                    <Alert severity="error">Incorrect Username/Password</Alert>
+                }
                 <CssBaseline />
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
@@ -104,9 +133,8 @@ class Login extends Component {
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            // value={this.state.email}
-                            // onChange={(event) => this.updateEmail(event.target.value)}
-                            name={this.props.name}
+                            value={this.state.email}
+                            onChange={(event) => this.updateEmail(event.target.value)}
                         />
                         <TextField
                             // variant="outlined"
@@ -118,23 +146,24 @@ class Login extends Component {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            // value={this.state.password}
-                            // onChange={(event) => this.updatePassword(event.target.value)}
-                            password={this.props.password}
+                            value={this.state.password}
+                            onChange={(event) => this.updatePassword(event.target.value)}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Button
+                        {/* <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={() => { this.onSubmit(); this.props.clickLogin(); }} >
+                            onClick={() => this.onSubmit} >
                             Sign In
-          </Button>
+          </Button> */}
+                        <button type="button" className="btn btn-primary"
+                            onClick={() => this.onSubmit()}>Sign IN</button>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
