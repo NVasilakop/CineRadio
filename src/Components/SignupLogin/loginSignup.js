@@ -10,14 +10,18 @@ class LoginSignup extends Component {
         super(props);
         this.state = {
             loggedIn: false,
-            toSignUp: false
+            toSignUp: false,
+            email: '',
+            password: ''
         };
     }
 
     clickLogout = () => {
         this.setState({
             loggedIn: false,
-            toSignUp: false
+            toSignUp: false,
+            email: '',
+            password: ''
         })
     }
 
@@ -39,7 +43,7 @@ class LoginSignup extends Component {
         return (
             <div>
                 { !this.state.toSignup &&
-                    <Login clickLogin={this.clickLogin} clickToSignup={this.clickToSignup} />
+                    <Login clickLogin={this.clickLogin} findAvatarName={this.props.clickToTakeLoginData} clickToSignup={this.clickToSignup} email={this.state.email} password={this.state.password} />
                 }
                 {
                     (this.state.loggedIn) &&
@@ -47,7 +51,7 @@ class LoginSignup extends Component {
                 }
                 {
                     this.state.toSignUp &&
-                    <SignUp />
+                    <SignUp email={this.state.email} password={this.state.password} />
                 }
             </div>
         )

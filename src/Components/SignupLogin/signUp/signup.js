@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from 'axios';
 
 const useStyles = theme => ({
     paper: {
@@ -46,8 +47,74 @@ function Copyright() {
     );
 }
 
-class SignUp extends Component {
 
+
+class SignUp extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showLoginErrorMessage: false,
+            email: this.props.email,
+            password: this.props.password,
+            firstname: '',
+            lastname: ''
+        };
+    }
+
+    signUp = () => {
+        axios.post(`https://cineradio-96ff.restdb.io/rest/login`, {
+            "username": this.state.email, "password": this.state.password,
+            "firstname": this.state.firstname, "lastname": this.state.lastname
+        },
+            {
+                headers: {
+                    'x-apikey': '5fc56dd34af3f9656800d0e7'
+                }
+            })
+            .then(
+                (res) => {
+                    console.log(res);
+                    if (res.data.length !== 0) {
+                        this.setState({
+                            showLoginErrorMessage: false
+                        })
+                        this.props.clickLogin();
+                    }
+                    else {
+                        this.setState({
+                            showLoginErrorMessage: true
+                        })
+                    }
+                }, () => this.forceUpdate()
+            ).catch(function (error) {
+                console.error(error);
+            });
+    }
+    updatePassword = (pass) => {
+        this.setState({
+            password: pass
+        });
+        console.log(this.state.password);
+    }
+
+    updateEmail = (email) => {
+        this.setState({
+            email: email
+        });
+        console.log(this.state.email);
+    }
+
+    updateFirstName = (fName) => {
+        this.setState({
+            firstname: fName
+        });
+    }
+
+    updateLastName = (lastna) => {
+        this.setState({
+            lastname: lastna
+        });
+    }
     render() {
         const { classes } = this.props;
 
@@ -73,6 +140,8 @@ class SignUp extends Component {
                                     id="firstName"
                                     label="First Name"
                                     autoFocus
+                                    value={this.state.firstname}
+                                    onChange={(event) => this.updateFirstName(event.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -84,6 +153,8 @@ class SignUp extends Component {
                                     label="Last Name"
                                     name="lastName"
                                     autoComplete="lname"
+                                    value={this.state.lastname}
+                                    onChange={(event) => this.updateLastName(event.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -95,6 +166,8 @@ class SignUp extends Component {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
+                                    value={this.state.email}
+                                    onChange={(event) => this.updateEmail(event.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -107,6 +180,8 @@ class SignUp extends Component {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    value={this.state.password}
+                                    onChange={(event) => this.updatePassword(event.target.value)}
                                 />
                             </Grid>
                             {/* <Grid item xs={12}>
@@ -116,7 +191,7 @@ class SignUp extends Component {
                                 />
                             </Grid> */}
                         </Grid>
-                        <Button
+                        {/* <Button
                             type="submit"
                             fullWidth
                             variant="contained"
@@ -124,7 +199,8 @@ class SignUp extends Component {
                             className={classes.submit}
                         >
                             Sign Up
-          </Button>
+          </Button> */}
+                        <button type="button" className="btn btn-primary" onClick={this.signUp}>Sign Up</button>
                         <Grid container justify="flex-end">
                             <Grid item>
                                 <Link href="#" variant="body2">

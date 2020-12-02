@@ -7,9 +7,7 @@ class Logout extends Component {
     render() {
 
         return (
-            <div>
-                Logout
-            </div>
+            <button onClick={() => this.props.clickLogout}>LogOut Bitch</button>
         )
     }
 }

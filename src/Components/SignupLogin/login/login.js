@@ -59,8 +59,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
+            email: this.props.email,
+            password: this.props.password,
             showLoginErrorMessage: false
         };
 
@@ -91,7 +91,12 @@ class Login extends Component {
                 (res) => {
                     console.log(res);
                     if (res.data.length !== 0) {
+                        this.setState({
+                            showLoginErrorMessage: false
+                        })
                         this.props.clickLogin();
+                        this.props.findAvatarName(res.data[0].firstname + " " + res.data[0].lastname,
+                            "https://cineradio-96ff.restdb.io/media/" + res.data[0].userPhoto[0]);
                     }
                     else {
                         this.setState({
@@ -168,7 +173,7 @@ class Login extends Component {
                             <Grid item xs>
                                 <Link href="#" variant="body2">
                                     Forgot password?
-              </Link>
+                            </Link>
                             </Grid>
                             <Grid item>
                                 <Link href="#" variant="body2" onClick={this.props.clickToSignup}>

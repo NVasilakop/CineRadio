@@ -66,6 +66,7 @@ class Welcome extends Component {
           </div>
           {(this.state.cineButton && !this.state.loginClicked) && (
             <div>
+              <MenuBar loginClicked={this.loginClicked} />
               <CineLanding></CineLanding>
             </div>)
           }
