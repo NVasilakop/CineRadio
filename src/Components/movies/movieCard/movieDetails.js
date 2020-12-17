@@ -7,7 +7,8 @@ class MovieDetails extends Component {
         super(props);
         console.log(props);
         this.state = {
-            trailer: ''
+            trailer: '',
+            backPoster: ''
         };
         this.getMovieTrailer();
     }
@@ -22,6 +23,7 @@ class MovieDetails extends Component {
             //     return response.data;
             .then((response) => {
                 console.log(response)
+                this.getBackPoster(this.props.backgroundPoster);
                 this.setState({
                     // trailer: 'https://www.youtube.com/embed/' + response.data.results[0].key + '&output=embed',
                     trailer: response.data.results[0].key
@@ -35,6 +37,21 @@ class MovieDetails extends Component {
             });
     }
 
+    getBackPoster = (poster) => {
+        axios.request(poster)
+            .then((response) => {
+                console.log(response)
+                this.setState({
+                    backPoster: response.config.url
+                }, () => {
+                    // moviesByGenreToShow = this.state.moviesByGenre;
+                    this.forceUpdate();
+                })
+                console.log("Movie List");
+            }).catch(function (error) {
+                console.error(error);
+            });
+    }
     _onReady(event) {
         // access to player in all event handlers via event.target
         event.target.pauseVideo();
@@ -50,7 +67,7 @@ class MovieDetails extends Component {
         };
 
         return (
-            <div>
+            <div id="resetMe" style={{ backgroundSize: 'cover', backgroundImage: `url(${(this.state.backPoster)})`, maxWidth: '100%', height: '2400px' }}>
                 <p>{this.props.details.original_title}</p>
                 <div>
                     {this.props.details.overview}
@@ -58,8 +75,8 @@ class MovieDetails extends Component {
                 {/* <iframe width="420" height="315"
                     src={this.state.trailer}>
                 </iframe> */}
-                <Youtube videoId={this.state.trailer} opts={opts} onReady={this._onReady} />
 
+                <Youtube videoId={this.state.trailer} opts={opts} onReady={this._onReady} />
             </div>
         )
     }

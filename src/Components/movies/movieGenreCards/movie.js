@@ -28,7 +28,7 @@ class Movie extends Component {
             showMovieDetails: false,
             movieDetails: Object,
             showMovieCard: false,
-            showImg: false
+            showImg: false,
 
         }
         this.fetchBackPoster();
@@ -66,7 +66,7 @@ class Movie extends Component {
                 console.log(response);
                 this.setState({
                     backPoster: response.config.url,
-                    showImg: true
+                    showImg: true,
                 }, () => {
                     this.forceUpdate();
                 })
@@ -76,7 +76,7 @@ class Movie extends Component {
 
     }
 
-    getMovieDetails = () => {
+    getMovieDetails = (backPoster) => {
         this.api.get('https://api.themoviedb.org/3/movie/' + this.props.id + '?api_key=0744709c0c9f817d56414c84aae9d5c2&language=en-US', { delay: 2000 })
             .then((response) => {
                 console.log(response)
@@ -145,7 +145,7 @@ class Movie extends Component {
                 }
                 {
                     this.props.showDetails && this.state.showMovieDetails &&
-                    <MovieDetails details={this.state.movieDetails} />
+                    <MovieDetails details={this.state.movieDetails} backgroundPoster={'https://image.tmdb.org/t/p/original' + this.props.poster_path} />
                 }
             </div>
         )

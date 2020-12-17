@@ -22,7 +22,7 @@ class MusicLanding extends Component {
         return (
             <SearchBar
                 value={this.state.value}
-                onChange={(newValue) => this.setState({ value: newValue })}
+                onChange={(newValue) => { this.setState({ value: newValue }); console.log(newValue) }}
             // onRequestSearch={() => doSomethingWith(this.state.value)}
             />
         );

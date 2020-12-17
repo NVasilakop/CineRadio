@@ -70,7 +70,12 @@ class Welcome extends Component {
               <CineLanding></CineLanding>
             </div>)
           }
-
+          {(this.state.musicButton && !this.state.loginClicked) && (
+            <div>
+              <MenuBar loginClicked={this.loginClicked} />
+              <MusicLanding></MusicLanding>
+            </div>)
+          }
           {(!this.state.cineButton && !this.state.musicButton) && (
             <div>
               {/* <Router> */}
@@ -106,7 +111,7 @@ class Welcome extends Component {
               </div>
               <div id="musicImg" className="parallax">
                 <div>
-                  <Link to="/musicLanding">
+                  <Link to="/musicLanding" onClick={() => this.pressMusicButton()}>
                     GoToMusic
                   </Link>
                   {<Route path="/musicLanding" component={MusicLanding} />}

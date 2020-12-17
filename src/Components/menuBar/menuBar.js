@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, MenuItem } from '@material-ui/core';
 import { Switch, Route, BrowserRouter as Router, Link } from 'react-router-dom';
 import LoginSignup from '../SignupLogin/loginSignup';
 import { withStyles } from '@material-ui/core/styles';
@@ -56,7 +56,9 @@ class MenuBar extends Component {
                 <Link to="/login" variant="primary" onClick={this.props.loginClicked}>Login</Link>
                 {/* </Button> */}
               </Typography>
-              <Avatar src={this.state.avatarImg} className={classes.large} />
+              <MenuItem style={{ float: "right" }}>
+                <Avatar src={this.state.avatarImg} className={classes.large} />
+              </MenuItem>
             </Toolbar>
           </AppBar>
           {/* <Switch> */}
